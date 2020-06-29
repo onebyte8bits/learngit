@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>snake</title>
+    <style>
+        *{
+            margin: 0px;
+            padding: 0px;
+        }
+        #contain{
+            width: 80%;
+            height: 500px;
+            margin: 0 auto;
+            border: 1px solid black;
+            position: relative;
+        }
+        .box{
+            width: 20px;
+            height: 20px;
+            top: 0;
+            left: 0;
+            background-color: red;
+            position: absolute;
+        }
+        .head{
+            background-color: aquamarine;
+        }
+    </style>
+</head>
+<body>
+    <div id="contain">
+        <div class="box head"></div>
+        <div class="box"></div>
+    </div>
+    <script>
+        var boxs = document.querySelectorAll(".box");
+        var turn = "right";
+        // clientWidth与clientHeight不包含border与滚动条，返回的值的类型是Number
+        var skstrw = document.getElementById("contain").clientWidth;
+        var skstrh = document.getElementById("contain").clientHeight;
+        var sk_x = (skstrw/2-10);
+        var sk_y = (skstrh/2-10);
+        // offsetWidth与offsetHeight包含border与滚动条，返回的值的类型是Number
+        /*var skstrw_1 = document.getElementById("contain").offsetWidth;
+        var skstrh_2 = document.getElementById("contain").offsetHeight;*/
+        setInterval(function(){
+            snakeMove();
+        },100);
+        
+
+        function snakeMove(){
+            switch (turn){
+                case "top":
+                sk_y -= 20;
+                break;
+                case "right":
+                sk_x += 20;
+                break;
+                case "bottom":
+                sk_y += 20;
+                break;
+                case "left":
+                sk_x -= 20;
+                break;
+            }
+        
+            for(var i = boxs.length-1 ; i > 0 ; i--){
+                boxs[i].style.top = boxs[i-1].style.top;
+                boxs[i].style.left = boxs[i-1].style.left;
+            }
+            // 设置边界
+            if(sk_x > (skstrw-20)){
+                sk_x = 0;
+            }
+            if(sk_x < 0){
+                sk_x = (skstrw-20);
+            }
+            if(sk_y > (skstrh-20)){
+                sk_y = 0;
+            }
+            if(sk_y < 0){
+                sk_y = (skstrh-20);
+            }
+
+            boxs[i].style.top = sk_y + "px";
+            boxs[i].style.left = sk_x + "px";
+    
+        }
+
+        document.onkeydown = function(evt){
+            var e = evt;
+            var keyCode = e.keyCode;
+            switch(keyCode){
+                case 37:
+                turn = "left";break;
+                case 38:
+                turn = "top";break;
+                case 39:
+                turn = "right";break;
+                case 40:
+                turn = "bottom";break;
+            }
+        }
+    </script>
+</body>
+</html>
